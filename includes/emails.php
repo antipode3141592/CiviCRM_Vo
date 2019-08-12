@@ -6,10 +6,15 @@ function get_email_history_user($id){
     'id', 
     'subject', 
     'details',
-    'created_date' 
+    'created_date',
+    'activity_contacts.contact_id'
   ])
   ->addWhere('activity_type_id', '=', 12)	//inbound email type id
+  ->addWhere('activity_contacts.contact_id', '=', $id)
   ->addOrderBy('created_date', 'DESC')
+  // ->setChain([
+  //   'contact_data' => ['Contact', 'get', 'display_name', ['where' => [['id', '=', '$activity_contacts.contact_id']]], 0]
+  // ])
   ->execute();
 	 ob_start();
 	 ?>
@@ -22,6 +27,7 @@ function get_email_history_user($id){
 					<th data-field="subject" data-sortable="true">Subject</th>
 					<th data-field="details">Body</th>
 					<th data-field="date" data-sortable="true">Created Date</th>
+					<!-- <th data-field="from" data-sortable="true">From</th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -31,7 +37,8 @@ function get_email_history_user($id){
 		<?php _e('<td class="id">'.$activity["id"].'</td>');
 		_e('<td class="subject">'.$activity["subject"].'</td>');
 		_e('<td class ="details">'.$activity["details"].'</td>');
-		_e('<td class ="date">'.$activity["created_date"].'</td>');?>
+		_e('<td class ="date">'.$activity["created_date"].'</td>');
+		// _e('<td class ="from">'.$activity["contact_data"]["display_name"].'</td>');?>
 		</tr>
 		<?php
 	}
