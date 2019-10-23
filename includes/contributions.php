@@ -9,11 +9,11 @@ function contributions_show_all(){
 	    'total_amount', 
 	    'Giving.Appeal', 
 	    'Giving.Fund', 
-	    'Giving.RE_Gift_ID'
 	  ])
   ->setChain([
     'contact_data' => ['Contact', 'get', ['where' => [['id', '=', '$contact_id']]], 0]
   ])
+  ->setLi
   ->execute();
 	 ob_start();
 	 ?>
@@ -65,7 +65,6 @@ function contributions_user($userid){
 	    'total_amount', 
 	    'Giving.Appeal', 
 	    'Giving.Fund', 
-	    'Giving.RE_Gift_ID'
 	  ])
 	  ->addWhere('contact_id', '=', $userid)
 	  ->execute();
@@ -81,7 +80,6 @@ function contributions_user($userid){
 				<th data-field="amount" data-sortable="true">Gift Amount</th>
 				<th data-field="appeal" data-sortable="true">Appeal</th>
 				<th data-field="fund" data-sortable="true">Fund</th>
-				<th data-field="re_gift_id" data-sortable="true">RE Gift ID</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -96,7 +94,6 @@ function contributions_user($userid){
 	  	_e('<td class="amount">'.$contribution["total_amount"].'</td>');
 	  	_e('<td class="appeal">'.$contribution["Giving"]["Appeal"].'</td>');
 	  	_e('<td class="fund">'.$contribution["Giving"]["Fund"].'</td>');
-	  	_e('<td class="re_gift_id">'.$contribution["Giving"]["RE_Gift_ID"].'</td>');
 		?>
 		</tr><?php
 	}?>
