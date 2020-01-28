@@ -1,71 +1,73 @@
 <?php
 
-function contributions_show_all(){
+function events_show_all(){
 	//grab GET variables
 	$results_per_page = isset($_GET['rpp']) ? sanitize_text_field($_GET['rpp']) : 25;	//default to show 25 results per page
 	$current_page = isset($_GET['pp']) ? sanitize_text_field($_GET['pp']) : 1;
 	//calculate offset to send API based on $results_per_page and $current_page
 	$results_offset = (($current_page - 1) * $results_per_page);
 
-	$contact_total_results = \Civi\Api4\Contribution::get()
+	$event_total_results = \Civi\Api4\Event::get()
 	->setSelect([
 	    'id', 
-	    'contact_id', 
-	    'receive_date', 
-	    'total_amount', 
-	    'Giving.Appeal', 
-	    'Giving.Fund', 
+	    'summary', 
+	    'title', 
+	    'start_date', 
+	    'end_date', 
+	    'registration_link_text', 
+	    'is_active',
 	  ])
 	  ->selectRowCount()
 	  ->execute()
 	  ->count();
 
-	$contacts = \Civi\Api4\Contribution::get()
-	->setSelect([
+	$events = \Civi\Api4\Event::get()
+	  ->setSelect([
 	    'id', 
-	    'contact_id', 
-	    'receive_date', 
-	    'total_amount', 
-	    'Giving.Appeal', 
-	    'Giving.Fund', 
+	    'summary', 
+	    'title', 
+	    'start_date', 
+	    'end_date', 
+	    'registration_link_text', 
+	    'is_active',
 	  ])
-	  ->setChain([
-	    'contact_data' => ['Contact', 'get', ['where' => [['id', '=', '$contact_id']]], 0]
-	  ])
-	  ->setLimit($results_per_page)
-	  ->setOffset($results_offset)
-  	->execute();
-  	// $contact_total_results = count($contacts);
+		->setLimit($results_per_page)
+		->setOffset($results_offset)
+  		->execute();
+	
 	 ob_start();
 	 ?>
 	 <div class="table_div">
-	 	<?php _e(create_navigation_pagination_controls($contact_total_results)); ?>
+	 	<?php _e(create_navigation_pagination_controls($event_total_results)); ?>
 		<table data-toggle="table">
 			<caption></caption>
 			<thead>
 				<tr>
 					<th data-field="id" data-sortable="true">ID</th>
-					<th data-field="name" data-sortable="true">Name</th>
-					<th data-field="data" data-sortable="true">Recieved Date</th>
-					<th data-field="amount" data-sortable="true">Amount</th>
-					<th data-field="appeal" data-sortable="true">Appeal</th>
-					<th data-field="fund" data-sortable="true">Fund</th>
+					<th data-field="summary" data-sortable="true">Summary</th>
+					<th data-field="title" data-sortable="true">Title</th>
+					<th data-field="start_date" data-sortable="true">Start Date</th>
+					<th data-field="end_date" data-sortable="true">End Date</th>
+					<th data-field="registration_link" data-sortable="false">Registration Link</th>
+					<th data-field="is_active" data-sortable="true">Is Active?</th>
 				</tr>
 			</thead>
 			<tbody>
 	<?php
-	$url_civicrm =get_site_url(null,'/individual-profile/');
-	foreach ($contacts as $contact) {
-		$link = esc_url_raw(add_query_arg(array(
-			'id' => $contact["contact_id"],
-		), $url_civicrm));
+
+	// $url_civicrm =get_site_url(null,'/individual-profile/');
+	foreach ($events as $event) {
+		// $link = esc_url_raw(add_query_arg(array(
+		// 	'id' => $event["contact_id"],
+		// ), $url_civicrm));
 	  ?><tr>
-		<?php _e('<td class="id">'.$contact["contact_id"].'</td>');
-			_e('<td class="name"><a href="'.$link.'">'.$contact["contact_data"]["display_name"].'</a></td>');
-			_e('<td class="date">'.$contact["receive_date"].'</td>');
-			_e('<td class="amount">'.$contact["total_amount"].'</td>');
-			_e('<td class="appeal">'.$contact["Giving"]["Appeal"].'</td>');
-	  		_e('<td class="fund">'.$contact["Giving"]["Fund"].'</td>');?>
+		<?php _e('<td class="id">'.$event["id"].'</td>');
+			_e('<td class="summary">'.$event["summary"].'</td>');
+			_e('<td class="title">'.$event["title"].'</td>');
+			_e('<td class="start_date">'.$event["start_date"].'</td>');
+			_e('<td class="end_date">'.$event["end_date"].'</td>');
+	  		_e('<td class="registration_link">'.$event["registration_link_text"].'</td>');
+	  		_e('<td class="is_active">'.$event["is_active"].'</td>');?>
 		</tr>
 		<?php
 	}
@@ -76,9 +78,9 @@ function contributions_show_all(){
 	<?php
 	return ob_get_clean();
 }
-add_shortcode('contributions_show_all', 'contributions_show_all');
+add_shortcode('events_show_all', 'events_show_all');
 
-function contributions_user($userid){
+function events_user($userid){
 	$contributions = \Civi\Api4\Contribution::get()
 	  ->setSelect([
 	    'id', 
@@ -126,12 +128,12 @@ function contributions_user($userid){
 	return ob_get_clean();
 }
 
-function contributions_user_shortcode() {
+function events_user_shortcode() {
 	//grab shortcode attribute for user id
 	if (isset($_GET['id']) && ($_GET['id'] > 0)){
 		$id = $_GET['id'];
-		_e(contributions_user($id));
+		_e(events_user($id));
 	}
 }
-add_shortcode('contributions_show_user', 'contributions_user_shortcode');
+add_shortcode('events_show_user', 'events_user_shortcode');
 ?>

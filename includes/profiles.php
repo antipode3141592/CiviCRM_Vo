@@ -9,7 +9,7 @@ function get_profile_individual($id){
     'created_date', 
     'modified_date',
     'emails.email',
-    'RE_Integration.RE_Constituent_ID'
+    'Integrations.RE_Constituent_ID'
   ])
   ->addWhere('id', '=', $id)
   ->execute();
@@ -42,7 +42,7 @@ function get_profile_individual($id){
 		_e('<td>'.$contact["organization_name"].'</td>');
 		_e('<td>'.$contact["created_date"].'</td>');
 		_e('<td>'.$contact["modified_date"].'</td>');
-		_e('<td>'.$contact["RE_Integration"]["RE_Constituent_ID"].'</td>');?>
+		_e('<td>'.$contact["Integrations"]["RE_Constituent_ID"].'</td>');?>
 		</tr>
 		<?php
 	}

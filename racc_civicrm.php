@@ -6,8 +6,8 @@ Description: Customization of CiviCRM for Regional Arts and Culture Council
 Author: Sean Kirkpatrick
 Author URI: https://racc.org
 Contributors: 
-Version: 0.06
-Date of Last Revision:  08/19/2019
+Version: 0.12
+Date of Last Revision:  1/2/2020
 */
  
 /**********************************
@@ -42,6 +42,11 @@ if(is_admin()) {
 	include(RACC_CRM_BASE_DIR . '/includes/profiles.php');
 	include(RACC_CRM_BASE_DIR . '/includes/contributions.php');
 	include(RACC_CRM_BASE_DIR . '/includes/emails.php');
+	include(RACC_CRM_BASE_DIR . '/includes/navigation.php');
+	include(RACC_CRM_BASE_DIR . '/includes/events.php');
+	include(RACC_CRM_BASE_DIR . '/includes/gravityforms_functions.php');
+	include(RACC_CRM_BASE_DIR . '/includes/db_functions.php');
+	include(RACC_CRM_BASE_DIR . '/includes/webhook_processing.php');
 	include(RACC_CRM_BASE_DIR . '/includes/enqueue_scripts.php');
 }
 
