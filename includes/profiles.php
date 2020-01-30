@@ -54,11 +54,11 @@ function get_profile_individual($id){
 	return ob_get_clean();
 }
 
-function racc_civi_view_individual_profile(){
+function vo_civi_view_individual_profile(){
 	if (isset($_GET['id']) && ($_GET['id'] > 0)){
 		$id = $_GET['id'];
 		_e(get_profile_individual($id));
 	}
 }
-add_shortcode('profile_individual', 'racc_civi_view_individual_profile');
+add_shortcode('profile_individual', 'vo_civi_view_individual_profile');
 ?>

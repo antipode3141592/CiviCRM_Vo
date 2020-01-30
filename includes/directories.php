@@ -1,6 +1,6 @@
 <?php
 
-function racc_civi_individual_directory(){
+function vo_civi_individual_directory(){
 	global $wp;
 	//grab POST variables
 	$filter_first_name = isset($_POST['first_name']) ? wp_strip_all_tags($_POST['first_name']) : null;
@@ -198,5 +198,5 @@ function racc_civi_individual_directory(){
 	<?php
 	return ob_get_clean();
 }
-add_shortcode('directory_individual', 'racc_civi_individual_directory');
+add_shortcode('directory_individual', 'vo_civi_individual_directory');
 ?>

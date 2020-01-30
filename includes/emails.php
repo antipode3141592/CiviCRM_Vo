@@ -12,9 +12,7 @@ function get_email_history_user($id){
   ->addWhere('activity_type_id', '=', 12)	//inbound email type id
   ->addWhere('activity_contacts.contact_id', '=', $id)
   ->addOrderBy('created_date', 'DESC')
-  // ->setChain([
-  //   'contact_data' => ['Contact', 'get', 'display_name', ['where' => [['id', '=', '$activity_contacts.contact_id']]], 0]
-  // ])
+ 
   ->execute();
 	 ob_start();
 	 ?>
@@ -50,11 +48,11 @@ function get_email_history_user($id){
 	return ob_get_clean();
 }
 
-function racc_civi_view_individual_email_history(){
+function vo_civi_view_individual_email_history(){
 	if (isset($_GET['id']) && ($_GET['id'] > 0)){
 		$id = $_GET['id'];
 		_e(get_email_history_user($id));
 	}
 }
-add_shortcode('email_history_individual', 'racc_civi_view_individual_email_history');
+add_shortcode('email_history_individual', 'vo_civi_view_individual_email_history');
 ?>

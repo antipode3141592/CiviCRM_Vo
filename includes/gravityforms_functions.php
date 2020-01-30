@@ -1,10 +1,9 @@
 <?php
 // https://docs.civicrm.org/sysadmin/en/latest/troubleshooting/#trigger-rebuild
-// ex:  http://crm.racc.org/wordpress/civicrm/menu/rebuild?reset=1&triggerRebuild=1
 
 //process gravity form submission from Newsletter Signup (form id = 2)
 //  see https://docs.gravityforms.com/gform_after_submission/ for details on the submission hook
-function racc_after_newsletter_signup_submission($entry, $form){
+function vo_after_newsletter_signup_submission($entry, $form){
 	//grab entry data
 	$field_id = 6;
 	$field = RGFormsModel::get_field($form, $field_id);
@@ -27,10 +26,10 @@ function racc_after_newsletter_signup_submission($entry, $form){
 			'location_type_id' => 'Main']]],])
 		->execute();
 }
-add_action('gform_after_submission_2', 'racc_after_newsletter_signup_submission', 10, 2);
+add_action('gform_after_submission_2', 'vo_after_newsletter_signup_submission', 10, 2);
 
 //process gravity form submission from Newsletter Signup (form id = 4)
-function racc_after_quick_add_individual_submission($entry, $form){
+function vo_after_quick_add_individual_submission($entry, $form){
 		//grab entry data
 	$field_id = 6;
 	$field = RGFormsModel::get_field($form, $field_id);
@@ -74,7 +73,7 @@ function racc_after_quick_add_individual_submission($entry, $form){
 
 
 }
-add_action('gform_after_submission_4', 'racc_after_quick_add_individual_submission', 10, 2);
+add_action('gform_after_submission_4', 'vo_after_quick_add_individual_submission', 10, 2);
 
 //use e-mail address to check for existence of the contact.  return true if exists
 function contact_record_exists($email){

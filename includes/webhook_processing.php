@@ -1,7 +1,7 @@
 <?php
 //a function and shortcode for a webhook catcher
 //  logs incoming webhooks in an internal db webhooks table
-function racc_crm_webhook_catcher(){
+function vo_crm_webhook_catcher(){
 	//switch flow based on source of webhook.  currently supporting webhooks from:
 	//  1)  Gravity Forms - many types of transactions
 	//		- contact updates (email, address)
@@ -15,13 +15,10 @@ function racc_crm_webhook_catcher(){
 	if(isset($_GET['crm-listener'])){
 		switch ($_GET['crm-listener']){
 			case 'gravity_forms': 
-				racc_webhook_gravity_forms();
+				vo_webhook_gravity_forms();
 				break;
 			case 'stripe':
-				racc_webhook_stripe();
-				break;
-			case 'sm_apply':
-				racc_webhook_sm_apply();
+				vo_webhook_stripe();
 				break;
 			default:
 				break;
@@ -29,12 +26,12 @@ function racc_crm_webhook_catcher(){
 	}
 	return false;
 }
-add_shortcode('crm_webhook', 'racc_crm_webhook_catcher');
+add_shortcode('crm_webhook', 'vo_crm_webhook_catcher');
 
-function racc_webhook_gravity_forms(){
+function vo_webhook_gravity_forms(){
 	global $wpdb;
 	http_response_code(200); //standard response
-	error_log("function stub:  racc_webhook_gravity_forms()");
+	error_log("function stub:  vo_webhook_gravity_forms()");
 
 	//store form data
 	try{
@@ -52,7 +49,7 @@ function racc_webhook_gravity_forms(){
 		$action = isset($event_json->action) ? $event_json->action : null;
 		$status = isset($event_json->status) ? $event_json->status : 0;
 
-		//table definition for racc_crm_webhooks:
+		//table definition for vo_crm_webhooks:
 		// 		id bigint UNSIGNED NOT NULL AUTO_INCREMENT,			
 		// 		external_id bigint UNSIGNED NULL,
 		// 		source nvarchar(50) NULL,
@@ -64,37 +61,21 @@ function racc_webhook_gravity_forms(){
 		// 		last_updated datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		// 		first_updated datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-		$results = $wpdb->get_results($wpdb->prepare("INSERT INTO racc_crm_webhooks(external_id, source, payload, user_id, email, action, status) VALUES(%s, %s, %s, %s, %s, %s, %s)", $external_id, $source, $payload, $user_id, $email, $action, $status));
+		$results = $wpdb->get_results($wpdb->prepare("INSERT INTO vo_crm_webhooks(external_id, source, payload, user_id, email, action, status) VALUES(%s, %s, %s, %s, %s, %s, %s)", $external_id, $source, $payload, $user_id, $email, $action, $status));
 		}catch(Exception $e){
 			error_log("gravity_forms webhook catcher error: " + $e->message);
 		}
 }
 
-function racc_webhook_stripe(){
+function vo_webhook_stripe(){
 	// global $wpdb;
 	http_response_code(200);	//standard response header
-	error_log("function stub:  racc_webhook_stripe()");
-	return false;
-}
-
-function racc_webhook_sm_apply(){
-	// global $wpdb;
-	http_response_code(200);	//standard response header
-	// retrieve the request's body and parse it as JSON
-	// try{
-		// $body = file_get_contents('php://input');
-		// grab the event information
-		// $event_json = json_decode($body);
-	// }catch(Exception $e){
-	// 	error_log("sm_apply webhook catcher error: " + $e->message);
-	// }
-	error_log("function stub:  racc_webhook_sm_apply()");
-	// re-retrieving helps prevent attacks with fabricated event ids
+	error_log("function stub:  vo_webhook_stripe()");
 	return false;
 }
 
 //CRON-scheduled periodic process to read 
-function racc_crm_webhook_processor(){
+function vo_crm_webhook_processor(){
 	return false;
 }
 
